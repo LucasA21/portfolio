@@ -14,8 +14,22 @@ const { title, description = "Frontend Developer Portfolio" } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Básico -->
+    <title>{title} | Lucas Araya | Frontend Developer</title>
     <meta name="description" content={description} />
-    <title>{title} | Lucas Araya</title>
+    <meta name="author" content="Lucas Araya" />
+    
+    <!-- Mapeo Correcto del Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    
+    <!-- OpenGraph (La "miniatura" que sale al enviar el link por WhatsApp) -->
+    <meta property="og:title" content={`${title} | Lucas Araya`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lucasaraya.dev" />
+    <meta property="og:image" content="/hero-illustration.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

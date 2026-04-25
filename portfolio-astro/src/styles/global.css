@@ -15,7 +15,15 @@ html, body {
     @apply antialiased font-sans;
     background-color: var(--color-main-bg);
     color: var(--color-text-dark);
+    scroll-behavior: smooth;
 } 
+
+/* --- A11Y FOCUS RINGS --- */
+/* Cuando el usuario navega con teclado, reemplazamos el anillo predeterminado azul por nuestra paleta */
+*:focus-visible {
+    outline: 2px solid var(--color-accent-brown);
+    outline-offset: 4px;
+}
 
 @keyframes bounce-down {
     0%, 100% {
