@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Analytics from "@vercel/analytics/astro"
 
 interface Props {
   title: string;
@@ -7,6 +8,9 @@ interface Props {
 }
 
 const { title, description = "Frontend Developer Portfolio" } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, "https://lucasaraya.com.ar");
+const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
 ---
 
 <!doctype html>
@@ -15,20 +19,31 @@ const { title, description = "Frontend Developer Portfolio" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- SEO Básico -->
     <title>{title} | Lucas Araya | Frontend Developer</title>
     <meta name="description" content={description} />
     <meta name="author" content="Lucas Araya" />
     
-    <!-- Mapeo Correcto del Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="theme-color" content="#F6F5F1" />
+    <meta name="robots" content="index, follow" />
     
-    <!-- OpenGraph (La "miniatura" que sale al enviar el link por WhatsApp) -->
-    <meta property="og:title" content={`${title} | Lucas Araya`} />
-    <meta property="og:description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- OpenGraph (WhatsApp, Facebook, etc) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://lucasaraya.dev" />
-    <meta property="og:image" content="/hero-illustration.svg" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} | Lucas Araya | Frontend Developer`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Twitter (X) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={`${title} | Lucas Araya | Frontend Developer`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -68,5 +83,6 @@ const { title, description = "Frontend Developer Portfolio" } = Astro.props;
       document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
       document.querySelectorAll(".fade-up-bottom").forEach((el) => observerBottom.observe(el));
     </script>
+    <Analytics />
   </body>
 </html>

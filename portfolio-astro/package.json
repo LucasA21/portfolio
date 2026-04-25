@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
+    "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^10.0.5",
     "@iconify-json/lucide": "^1.2.103",
     "@iconify-json/simple-icons": "^1.2.79",
@@ -22,6 +23,7 @@
     "@sanity/icons": "^3.7.4",
     "@sanity/ui": "^3.1.14",
     "@tailwindcss/vite": "^4.2.4",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^6.1.9",
     "astro-icon": "^1.1.5",
     "lodash": "^4.18.1",
