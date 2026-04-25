@@ -6,11 +6,9 @@ import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
 import { getSettings, getProjects } from '../utils/sanity';
 
-// ─── Fetch de datos desde Sanity ───
 const settings = await getSettings();
 const projects = await getProjects();
 
-// ─── Defaults (fallbacks si Sanity está vacío) ───
 const hero = {
   greeting: settings?.hero?.greeting ?? '¡Hola! Soy Lucas,',
   title: settings?.hero?.title ?? 'Frontend Developer',
@@ -46,7 +44,6 @@ const socialLinks = settings?.socialLinks ?? [
   { _key: 'github', platform: 'github', url: 'https://github.com/LucasA21' },
 ];
 
-// Fallback de proyectos si Sanity no tiene datos
 const displayProjects = projects.length > 0 ? projects : [
   { _id: '1', title: 'Eco Flow', description: 'Una guía minimalista para una vida consciente. Desarrollada con Astro y Tailwind puro, optimizada cien por ciento para rendimiento brutal y accesibilidad total.', tags: ['Astro', 'Tailwind', 'UX Design'] },
   { _id: '2', title: 'Serene Space', description: 'Dashboard para una app de mindfulness. Arquitectura de estados globales complejos manteniendo la fluidez en cada micro-interacción de la interfaz.', tags: ['React', 'Framer Motion'] },
@@ -55,7 +52,6 @@ const displayProjects = projects.length > 0 ? projects : [
 ---
 
 <Layout title={seo.title} description={seo.description}>
-  <!-- Hero y Header: Restricción de ancho y centrado -->
   <div class="max-w-5xl mx-auto px-6 pt-10">
     <div class="hero-animate-1">
       <Header socialLinks={socialLinks} />
@@ -74,7 +70,6 @@ const displayProjects = projects.length > 0 ? projects : [
         {hero.subtitle}
       </h1>
 
-      <!-- Botón Proyectos Integrado al Bloque -->
       <div class="mt-10 md:mt-14 relative z-10">
         <a href="#projects" class="btn-projects inline-flex bg-glass-card border border-stroke px-8 py-3.5 md:px-10 md:py-4 rounded-full text-sm md:text-base font-medium hover:shadow-lg transition-all items-center gap-3 cursor-pointer group active:scale-95">
           {hero.ctaLabel}
@@ -90,43 +85,84 @@ const displayProjects = projects.length > 0 ? projects : [
       <img src="/hero-illustration.svg" alt="Ilustración de Lucas trabajando en su computadora" class="w-64 md:w-80 lg:w-[420px]" />
     </div>
   </section>
-  </div> <!-- Cierre del hero container -->
+  </div> 
 
-  <!-- Ola separadora 1: Entrada a Projects -->
   <div class="w-full rotate-180 -mb-1 relative z-0">
     <svg viewBox="0 0 1440 120" class="w-full h-[6vw] min-h-[40px] text-wave-bg block" fill="currentColor" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Curva matemática suave: Tangentes horizontales en x=0 y x=1440 evitan los cortes. -->
       <path d="M0,40 C200,40 400,100 720,100 C1040,100 1240,20 1440,20 L1440,0 L0,0 Z"></path>
     </svg>
   </div>
 
-  <!-- Sección Projects con Fondo Constante -->
   <div class="w-full bg-wave-bg pt-12 pb-16">
     <section id="projects" class="max-w-5xl mx-auto px-6 scroll-mt-[22vh] relative z-10">
-      <!-- Etiqueta H2 Oculta pero presente para el puntaje SEO -->
       <h2 class="sr-only">Mis Proyectos Destacados</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group">
-      {displayProjects.map((project) => (
-        <ProjectCard 
-          title={project.title} 
-          description={project.description}
-          tags={project.tags ?? []}
-          link={project.link}
-        />
-      ))}
-    </div>
-    </section>
-  </div> <!-- Cierre del bg-[#EBE6E0] -->
+      
+      <div id="projects-container" class="relative overflow-hidden">
+        {Array.from({ length: Math.ceil(displayProjects.length / 3) }).map((_, pageIndex) => (
+          <div 
+            class={`project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group ${pageIndex === 0 ? 'flex' : 'hidden'}`}
+            data-page={pageIndex}
+          >
+            {displayProjects.slice(pageIndex * 3, (pageIndex * 3) + 3).map((project) => (
+              <ProjectCard 
+                title={project.title} 
+                description={project.description}
+                tags={project.tags ?? []}
+                link={project.link}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
 
-  <!-- Ola separadora 2: Salida de Projects -->
+      {displayProjects.length > 3 && (
+        <div class="flex justify-center items-center gap-4 mt-12">
+          {Array.from({ length: Math.ceil(displayProjects.length / 3) }).map((_, i) => (
+            <button
+              class={`project-dot w-2.5 h-2.5 rounded-full border-2 border-accent-brown transition-all duration-300 cursor-pointer ${i === 0 ? 'bg-accent-brown scale-125' : 'bg-transparent opacity-40 hover:opacity-100'}`}
+              data-target={i}
+              aria-label={`Ir a página ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  </div> 
+
+  <script>
+    const dots = document.querySelectorAll('.project-dot');
+    const pages = document.querySelectorAll('.project-page');
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const targetPage = dot.getAttribute('data-target');
+
+        dots.forEach(d => {
+          d.classList.remove('bg-accent-brown', 'scale-125');
+          d.classList.add('bg-transparent', 'opacity-40');
+        });
+        dot.classList.add('bg-accent-brown', 'scale-125');
+        dot.classList.remove('opacity-40');
+
+        pages.forEach(page => {
+          if (page.getAttribute('data-page') === targetPage) {
+            page.classList.remove('hidden');
+            page.classList.add('grid');
+          } else {
+            page.classList.remove('grid');
+            page.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+
   <div class="w-full -mt-1 relative z-0">
     <svg viewBox="0 0 1440 120" class="w-full h-[6vw] min-h-[40px] text-wave-bg block" fill="currentColor" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Variante de la curva para la salida: Empieza y termina con tangentes rectilíneas. -->
       <path d="M0,20 C200,20 400,100 720,100 C1040,100 1240,40 1440,40 L1440,0 L0,0 Z"></path>
     </svg>
   </div>
 
-  <!-- Contact y Footer -->
   <div class="max-w-5xl mx-auto px-6 pt-4 pb-10">
     <ContactSection contact={contact} />
     <Footer footer={footer} />
