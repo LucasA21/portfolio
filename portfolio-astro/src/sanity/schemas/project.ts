@@ -1,0 +1,85 @@
+import { defineType, defineField, defineArrayMember } from 'sanity';
+import { ProjectsIcon } from '@sanity/icons';
+
+export const project = defineType({
+  name: 'project',
+  title: 'Proyecto',
+  type: 'document',
+  icon: ProjectsIcon,
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Título',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Descripción',
+      type: 'text',
+      rows: 4,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tecnologías / Tags',
+      type: 'array',
+      of: [defineArrayMember({ type: 'string' })],
+      options: { layout: 'tags' },
+      validation: (rule) => rule.unique(),
+    }),
+    defineField({
+      name: 'link',
+      title: 'URL del proyecto',
+      type: 'url',
+      description: 'Link al sitio desplegado o repositorio',
+      validation: (rule) =>
+        rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'image',
+      title: 'Imagen / Thumbnail',
+      type: 'image',
+      description: 'Imagen opcional para la tarjeta (uso futuro)',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Texto alternativo',
+          type: 'string',
+          description: 'Describí la imagen para accesibilidad',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'order',
+      title: 'Orden de aparición',
+      type: 'number',
+      description: 'Número más bajo = aparece primero',
+      initialValue: 0,
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Destacado',
+      type: 'boolean',
+      description: 'Marcar como proyecto destacado',
+      initialValue: false,
+    }),
+  ],
+
+  orderings: [
+    {
+      title: 'Orden manual',
+      name: 'orderAsc',
+      by: [{ field: 'order', direction: 'asc' }],
+    },
+  ],
+
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'description',
+      media: 'image',
+    },
+  },
+});

@@ -4,32 +4,80 @@ import Header from '../components/Header.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Footer from '../components/Footer.astro';
+import { getSettings, getProjects } from '../utils/sanity';
+
+// ─── Fetch de datos desde Sanity ───
+const settings = await getSettings();
+const projects = await getProjects();
+
+// ─── Defaults (fallbacks si Sanity está vacío) ───
+const hero = {
+  greeting: settings?.hero?.greeting ?? '¡Hola! Soy Lucas,',
+  title: settings?.hero?.title ?? 'Frontend Developer',
+  subtitle: settings?.hero?.subtitle ?? 'especializado en UI/UX.',
+  ctaLabel: settings?.hero?.ctaLabel ?? 'Proyectos',
+};
+
+const seo = {
+  title: settings?.seo?.title ?? 'Home',
+  description: settings?.seo?.description ?? 'Frontend Developer Portfolio',
+};
+
+const contact = {
+  tagline: settings?.contact?.tagline ?? 'Hagamos equipo',
+  description: settings?.contact?.description ?? 'Estoy con disponibilidad para sumarme a nuevos proyectos. Ya sea que tengas una idea en mente o simplemente quieras charlar sobre código o diseño, ¡escribime!',
+  email: settings?.contact?.email ?? 'lucasaraya19@hotmail.com',
+  ctaLabel: settings?.contact?.ctaLabel ?? 'HABLEMOS',
+};
+
+const footer = {
+  copyright: settings?.footer?.copyright ?? 'Lucas Araya. All rights reserved.',
+  navLinks: settings?.footer?.navLinks ?? [
+    { _key: 'about', label: 'Sobre mí', href: '#about' },
+    { _key: 'projects', label: 'Proyectos', href: '#projects' },
+    { _key: 'contact', label: 'Contacto', href: '#contact' },
+  ],
+};
+
+const socialLinks = settings?.socialLinks ?? [
+  { _key: 'linkedin', platform: 'linkedin', url: 'https://www.linkedin.com/in/lucasaraya' },
+  { _key: 'gmail', platform: 'gmail', url: 'mailto:lucasaraya19@hotmail.com' },
+  { _key: 'instagram', platform: 'instagram', url: 'https://www.instagram.com/_lucasaraya/' },
+  { _key: 'github', platform: 'github', url: 'https://github.com/LucasA21' },
+];
+
+// Fallback de proyectos si Sanity no tiene datos
+const displayProjects = projects.length > 0 ? projects : [
+  { _id: '1', title: 'Eco Flow', description: 'Una guía minimalista para una vida consciente. Desarrollada con Astro y Tailwind puro, optimizada cien por ciento para rendimiento brutal y accesibilidad total.', tags: ['Astro', 'Tailwind', 'UX Design'] },
+  { _id: '2', title: 'Serene Space', description: 'Dashboard para una app de mindfulness. Arquitectura de estados globales complejos manteniendo la fluidez en cada micro-interacción de la interfaz.', tags: ['React', 'Framer Motion'] },
+  { _id: '3', title: 'Quiet Commerce', description: 'E-commerce planteado para reducir la fricción visual y la carga cognitiva. Escalamos la conversión en ventas en un ambiente libre de ruidos innecesarios.', tags: ['Next.js', 'Stripe'] },
+];
 ---
 
-<Layout title="Home">
+<Layout title={seo.title} description={seo.description}>
   <!-- Hero y Header: Restricción de ancho y centrado -->
   <div class="max-w-5xl mx-auto px-6 pt-10">
     <div class="hero-animate-1">
-      <Header />
+      <Header socialLinks={socialLinks} />
     </div>
   
   <section id="about" class="flex flex-col md:flex-row items-center md:items-center justify-between gap-10 lg:gap-16 mt-10 md:mt-24 scroll-mt-[22vh]">
     <div class="flex-1 w-full text-left pl-2 sm:pl-6 md:pl-0 lg:pl-8 hero-animate-2 flex flex-col items-start justify-center">
       
       <p class="text-xl md:text-2xl font-medium tracking-wider opacity-85 mb-2 md:mb-4 flex items-center justify-start gap-3 text-text-dark">
-        <span><span class="font-semibold text-accent-brown">¡Hola!</span> Soy Lucas,</span>
+        <span><span class="font-semibold text-accent-brown">{hero.greeting.split(' ')[0]}</span> {hero.greeting.split(' ').slice(1).join(' ')}</span>
         <img src="/mano.svg" alt="Icono de mano saludando" class="inline-block h-7 md:h-8 -mt-1 origin-bottom-right hover:rotate-12 transition-transform duration-300" />
       </p>
       
       <h1 class="text-[clamp(2.2rem,7vw,2.75rem)] leading-[120%] md:leading-[130%] tracking-normal md:tracking-wider font-normal max-w-[800px] text-balance">
-        <span class="font-semibold text-accent-brown">Frontend Developer</span><br />
-        especializado en UI/UX.
+        <span class="font-semibold text-accent-brown">{hero.title}</span><br />
+        {hero.subtitle}
       </h1>
 
       <!-- Botón Proyectos Integrado al Bloque -->
       <div class="mt-10 md:mt-14 relative z-10">
         <a href="#projects" class="btn-projects inline-flex bg-glass-card border border-stroke px-8 py-3.5 md:px-10 md:py-4 rounded-full text-sm md:text-base font-medium hover:shadow-lg transition-all items-center gap-3 cursor-pointer group active:scale-95">
-          Proyectos
+          {hero.ctaLabel}
           <svg class="btn-projects-arrow w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 5v14M19 12l-7 7-7-7"/>
           </svg>
@@ -58,21 +106,14 @@ import Footer from '../components/Footer.astro';
       <!-- Etiqueta H2 Oculta pero presente para el puntaje SEO -->
       <h2 class="sr-only">Mis Proyectos Destacados</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group">
-      <ProjectCard 
-        title="Eco Flow" 
-        description="Una guía minimalista para una vida consciente. Desarrollada con Astro y Tailwind puro, optimizada cien por ciento para rendimiento brutal y accesibilidad total."
-        tags={["Astro", "Tailwind", "UX Design"]}
-      />
-      <ProjectCard 
-        title="Serene Space" 
-        description="Dashboard para una app de mindfulness. Arquitectura de estados globales complejos manteniendo la fluidez en cada micro-interacción de la interfaz."
-        tags={["React", "Framer Motion"]}
-      />
-      <ProjectCard 
-        title="Quiet Commerce" 
-        description="E-commerce planteado para reducir la fricción visual y la carga cognitiva. Escalamos la conversión en ventas en un ambiente libre de ruidos innecesarios."
-        tags={["Next.js", "Stripe"]}
-      />
+      {displayProjects.map((project) => (
+        <ProjectCard 
+          title={project.title} 
+          description={project.description}
+          tags={project.tags ?? []}
+          link={project.link}
+        />
+      ))}
     </div>
     </section>
   </div> <!-- Cierre del bg-[#EBE6E0] -->
@@ -87,7 +128,7 @@ import Footer from '../components/Footer.astro';
 
   <!-- Contact y Footer -->
   <div class="max-w-5xl mx-auto px-6 pt-4 pb-10">
-    <ContactSection />
-    <Footer />
+    <ContactSection contact={contact} />
+    <Footer footer={footer} />
   </div>
 </Layout>

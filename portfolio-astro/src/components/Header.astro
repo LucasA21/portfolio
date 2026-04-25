@@ -1,5 +1,26 @@
 ---
 import { Icon } from "astro-icon/components";
+
+interface SocialLink {
+  _key: string;
+  platform: string;
+  url: string;
+}
+
+interface Props {
+  socialLinks?: SocialLink[];
+}
+
+const { socialLinks = [] } = Astro.props;
+
+// Mapeo de plataforma a ícono de astro-icon
+const iconMap: Record<string, string> = {
+  linkedin: 'simple-icons:linkedin',
+  github: 'simple-icons:github',
+  instagram: 'simple-icons:instagram',
+  gmail: 'simple-icons:gmail',
+  twitter: 'simple-icons:x',
+};
 ---
 
 <header
@@ -11,39 +32,16 @@ import { Icon } from "astro-icon/components";
   </div>
 
   <nav class="flex gap-6 items-center">
-    <a
-      href="https://www.linkedin.com/in/lucasaraya"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-accent-brown hover:-translate-y-1 hover:opacity-70 transition-all"
-      aria-label="LinkedIn"
-    >
-      <Icon name="simple-icons:linkedin" size={20} />
-    </a>
-    <a
-      href="mailto:lucasaraya19@hotmail.com"
-      class="text-accent-brown hover:-translate-y-1 hover:opacity-70 transition-all"
-      aria-label="Email"
-    >
-      <Icon name="simple-icons:gmail" size={20} />
-    </a>
-    <a 
-      href="https://www.instagram.com/_lucasaraya/" 
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-accent-brown hover:-translate-y-1 hover:opacity-70 transition-all"
-      aria-label="Instagram"
-    >
-      <Icon name="simple-icons:instagram" size={20} />
-    </a>
-    <a 
-      href="https://github.com/LucasA21" 
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-accent-brown hover:-translate-y-1 hover:opacity-70 transition-all"
-      aria-label="GitHub"
-    >
-      <Icon name="simple-icons:github" size={20} />
-    </a>
+    {socialLinks.map((social) => (
+      <a
+        href={social.url}
+        target={social.url.startsWith('mailto:') ? undefined : '_blank'}
+        rel={social.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+        class="text-accent-brown hover:-translate-y-1 hover:opacity-70 transition-all"
+        aria-label={social.platform}
+      >
+        <Icon name={iconMap[social.platform] ?? 'lucide:link'} size={20} />
+      </a>
+    ))}
   </nav>
 </header>

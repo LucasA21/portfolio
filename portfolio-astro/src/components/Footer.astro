@@ -1,17 +1,33 @@
 ---
+interface NavLink {
+  _key: string;
+  label: string;
+  href: string;
+}
+
+interface FooterData {
+  copyright: string;
+  navLinks: NavLink[];
+}
+
+interface Props {
+  footer: FooterData;
+}
+
+const { footer } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
 <footer class="mt-32 border-t border-stroke/50 pt-10 pb-16">
   <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-sm opacity-60 tracking-wider">
     <p>
-      &copy; {year} Lucas Araya. All rights reserved.
+      &copy; {year} {footer.copyright}
     </p>
     
     <div class="flex items-center gap-8">
-      <a href="#about" class="hover:text-accent-brown hover:opacity-100 hover:scale-105 active:scale-95 transition-all">Sobre mí</a>
-      <a href="#projects" class="hover:text-accent-brown hover:opacity-100 hover:scale-105 active:scale-95 transition-all">Proyectos</a>
-      <a href="#contact" class="hover:text-accent-brown hover:opacity-100 hover:scale-105 active:scale-95 transition-all">Contacto</a>
+      {footer.navLinks.map((link) => (
+        <a href={link.href} class="hover:text-accent-brown hover:opacity-100 hover:scale-105 active:scale-95 transition-all">{link.label}</a>
+      ))}
     </div>
   </div>
 </footer>
