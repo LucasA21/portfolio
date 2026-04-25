@@ -6,6 +6,8 @@ import react from '@astrojs/react';
 import icon from "astro-icon";
 import { loadEnv } from 'vite';
 
+import vercel from '@astrojs/vercel';
+
 const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
   process.env.NODE_ENV || "development",
   process.cwd(),
@@ -28,6 +30,6 @@ export default defineConfig({
       studioBasePath: '/admin',
     }),
   ],
+
+  adapter: vercel(),
 });
-
-

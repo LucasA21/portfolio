@@ -1,0 +1,27 @@
+---
+interface Props {
+  position: 'top' | 'bottom';
+  colorClass?: string;
+}
+
+const { position, colorClass = "text-wave-bg" } = Astro.props;
+
+// Diferentes paths para la curva superior e inferior para naturalidad
+const pathTop = "M0,40 C200,40 400,100 720,100 C1040,100 1240,20 1440,20 L1440,0 L0,0 Z";
+const pathBottom = "M0,20 C200,20 400,100 720,100 C1040,100 1240,40 1440,40 L1440,0 L0,0 Z";
+
+const path = position === 'top' ? pathTop : pathBottom;
+const containerClass = position === 'top' ? "w-full rotate-180 -mb-1 relative z-0" : "w-full -mt-1 relative z-0";
+---
+
+<div class={containerClass}>
+  <svg 
+    viewBox="0 0 1440 120" 
+    class={`w-full h-[6vw] min-h-[40px] block ${colorClass}`} 
+    fill="currentColor" 
+    preserveAspectRatio="none" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d={path}></path>
+  </svg>
+</div>

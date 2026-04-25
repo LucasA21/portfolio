@@ -1,0 +1,82 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import type { Project } from '../utils/sanity';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div class="w-full bg-wave-bg pt-12 pb-16">
+  <section id="projects" class="max-w-5xl mx-auto px-6 scroll-mt-[22vh] relative z-10">
+    <h2 class="sr-only">Mis Proyectos Destacados</h2>
+    
+    <div id="projects-container" class="relative overflow-hidden p-6 -m-6">
+      {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, pageIndex) => (
+        <div 
+          class={`project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group ${pageIndex === 0 ? 'flex' : 'hidden'}`}
+          data-page={pageIndex}
+        >
+          {projects.slice(pageIndex * 3, (pageIndex * 3) + 3).map((project) => (
+            <ProjectCard 
+              title={project.title} 
+              description={project.description}
+              tags={project.tags ?? []}
+              link={project.link}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+
+    {projects.length > 3 && (
+      <div class="flex justify-center items-center gap-4 mt-12">
+        {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, i) => (
+          <button
+            class={`project-dot w-2.5 h-2.5 rounded-full border-2 border-accent-brown transition-all duration-300 cursor-pointer ${i === 0 ? 'bg-accent-brown scale-125' : 'bg-transparent opacity-40 hover:opacity-100'}`}
+            data-target={i}
+            aria-label={`Ir a página ${i + 1}`}
+          />
+        ))}
+      </div>
+    )}
+  </section>
+</div>
+
+<script>
+  function setupPagination() {
+    const dots = document.querySelectorAll('.project-dot');
+    const pages = document.querySelectorAll('.project-page');
+
+    if (!dots.length || !pages.length) return;
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const targetPage = dot.getAttribute('data-target');
+
+        dots.forEach(d => {
+          d.classList.remove('bg-accent-brown', 'scale-125');
+          d.classList.add('bg-transparent', 'opacity-40');
+        });
+        dot.classList.add('bg-accent-brown', 'scale-125');
+        dot.classList.remove('opacity-40');
+
+        pages.forEach(page => {
+          if (page.getAttribute('data-page') === targetPage) {
+            page.classList.remove('hidden');
+            page.classList.add('grid');
+          } else {
+            page.classList.remove('grid');
+            page.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  // Inicializar en la carga inicial y tras navegaciones de View Transitions si se usan
+  setupPagination();
+  document.addEventListener('astro:after-swap', setupPagination);
+</script>

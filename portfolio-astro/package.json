@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
+    "@astrojs/vercel": "^10.0.5",
     "@iconify-json/lucide": "^1.2.103",
     "@iconify-json/simple-icons": "^1.2.79",
     "@lucide/astro": "^1.11.0",
