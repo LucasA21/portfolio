@@ -1,10 +1,10 @@
-## Commands
+## Comandos Útiles
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+| Comando             | Acción                    | Descripción                                                              |
+| :------------------ | :------------------------ | :----------------------------------------------------------------------- |
+| `pnpm install`      | Instalar dependencias     | Descarga e instala todos los paquetes necesarios.                        |
+| `pnpm dev`          | Servidor de desarrollo    | Inicia el proyecto en `localhost:4321` con recarga en vivo.              |
+| `pnpm build`        | Construir para producción | Genera la versión final del sitio en la carpeta `./dist/`.               |
+| `pnpm preview`      | Previsualizar build       | Permite ver cómo quedó la versión de producción localmente.              |
+| `pnpm astro check`  | **Diagnóstico de salud**  | Revisa errores de tipos (TypeScript) y problemas en archivos `.astro`.   |
+| `pnpm add -D <pkg>` | Agregar herramienta dev   | Instala un paquete como dependencia de desarrollo (ej. tipos o linters). |

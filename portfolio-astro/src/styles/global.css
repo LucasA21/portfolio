@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+@theme {
+    --color-main-bg: #F6F5F1;
+    --color-accent-brown: #531F1F;
+    --color-text-dark: #2D2424;
+    --color-glass-card: rgba(240, 238, 238, 0.3);
+    --color-stroke: #E0D6D6;
+
+    --font-sans: "Halant", sans-serif;
+}
+
+html, body {
+    @apply antialiased font-sans;
+    background-color: var(--color-main-bg);
+    color: var(--color-text-dark);
+} 
+
+/* Animación de rebote suave para la flecha del botón Projects */
+@keyframes bounce-down {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+.btn-projects-arrow {
+    display: inline-block;
+    animation: bounce-down 1.5s ease-in-out infinite;
+}
+
+.btn-projects:hover .btn-projects-arrow {
+    animation-duration: 0.8s;
+}

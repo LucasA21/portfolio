@@ -1,0 +1,45 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  title: string;
+  description: string;
+  tags?: string[];
+  link?: string;
+}
+
+const { 
+  title, 
+  description, 
+  tags = [], 
+  link = "#" 
+} = Astro.props;
+---
+
+<a 
+  href={link}
+  class="group flex flex-col p-8 bg-glass-card/50 backdrop-blur-sm border border-stroke rounded-[32px] hover:-translate-y-2 hover:shadow-xl transition-all duration-500 h-full"
+>
+  <div class="flex flex-col grow">
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-3xl font-medium tracking-wider text-accent-brown group-hover:opacity-80 transition-opacity">{title}</h3>
+      <div class="mt-1 text-accent-brown/30 group-hover:text-accent-brown transition-all duration-300">
+        <Icon name="lucide:arrow-up-right" size={24} />
+      </div>
+    </div>
+    
+    <p class="text-lg leading-[150%] opacity-80 mb-10 grow font-normal">
+      {description}
+    </p>
+
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-auto">
+        {tags.map((tag) => (
+          <span class="text-[13px] px-5 py-2 rounded-full border border-stroke/70 bg-white/20 text-text-dark/80 tracking-wide font-medium">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</a>
