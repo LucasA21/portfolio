@@ -3,6 +3,7 @@
 @theme {
     --color-main-bg: #F6F5F1;
     --color-accent-brown: #531F1F;
+    --color-wave-bg: color-mix(in srgb, var(--color-accent-brown) 10%, var(--color-main-bg)); 
     --color-text-dark: #2D2424;
     --color-glass-card: rgba(240, 238, 238, 0.3);
     --color-stroke: #E0D6D6;
@@ -16,7 +17,6 @@ html, body {
     color: var(--color-text-dark);
 } 
 
-/* Animación de rebote suave para la flecha del botón Projects */
 @keyframes bounce-down {
     0%, 100% {
         transform: translateY(0);
@@ -33,4 +33,51 @@ html, body {
 
 .btn-projects:hover .btn-projects-arrow {
     animation-duration: 0.8s;
+}
+
+.fade-up, .fade-up-bottom {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98); 
+    transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.fade-up-bottom {
+    transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 150ms, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 150ms;
+}
+
+.fade-up.is-visible, .fade-up-bottom.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.stagger-group > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-group > *:nth-child(2) { transition-delay: 150ms; }
+.stagger-group > *:nth-child(3) { transition-delay: 300ms; }
+
+@keyframes loadFadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.hero-animate-1 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.1s; opacity: 0; }
+.hero-animate-2 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.3s; opacity: 0; }
+.hero-animate-3 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.5s; opacity: 0; }
+
+
+::-webkit-scrollbar {
+    width: 6px; 
+}
+::-webkit-scrollbar-track {
+    background: var(--color-main-bg);
+}
+::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-accent-brown) 30%, transparent);
+    border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-brown);
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-accent-brown) 30%, transparent) var(--color-main-bg);
 }

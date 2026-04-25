@@ -7,13 +7,17 @@ import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="Home">
-  <Header />
+  <!-- Hero y Header: Restricción de ancho y centrado -->
+  <div class="max-w-5xl mx-auto px-6 pt-10">
+    <div class="hero-animate-1">
+      <Header />
+    </div>
   
-  <section class="flex flex-col md:flex-row items-start justify-between gap-10 mt-24">
-    <div class="flex-1 text-center">
+  <section id="about" class="flex flex-col md:flex-row items-start justify-between gap-10 mt-24 scroll-mt-[22vh]">
+    <div class="flex-1 text-center hero-animate-2">
       <p class="text-[32px] leading-[130%] tracking-wider font-normal mb-6 flex items-center justify-center gap-3">
         <span><span class="font-semibold text-accent-brown">Hi!</span> I am Lucas</span>
-        <img src="/Imagen-pegada.svg" alt="Dibujito decorativo" class="inline-block h-8" />
+        <img src="/mano.svg" alt="Icono de mano saludando" class="inline-block h-10 -mt-2 origin-bottom-right hover:rotate-12 transition-transform duration-300" />
       </p>
       
       <h1 class="text-[48px] leading-[130%] tracking-wider font-normal">
@@ -23,12 +27,12 @@ import Footer from '../components/Footer.astro';
       </h1>
     </div>
 
-    <div class="shrink-0 flex justify-center md:justify-end">
+    <div class="shrink-0 flex justify-center md:justify-end hero-animate-3">
       <img src="/hero-illustration.svg" alt="Ilustración de Lucas trabajando en su computadora" class="w-72" />
     </div>
   </section>
 
-  <div class="flex justify-center mt-20 mb-32">
+  <div class="flex justify-center mt-20 mb-6 relative z-10">
     <a href="#projects" class="btn-projects inline-flex bg-glass-card border border-stroke px-8 py-2.5 rounded-full text-sm font-medium hover:shadow-md transition-all items-center gap-2 cursor-pointer group">
       Projects
       <svg class="btn-projects-arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -36,9 +40,20 @@ import Footer from '../components/Footer.astro';
       </svg>
     </a>
   </div>
+  </div> <!-- Cierre del hero container -->
 
-  <section id="projects" class="scroll-mt-10">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- Ola separadora 1: Entrada a Projects -->
+  <div class="w-full rotate-180 -mb-1 relative z-0">
+    <svg viewBox="0 0 1440 120" class="w-full h-[6vw] min-h-[40px] text-wave-bg block" fill="currentColor" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Curva matemática suave: Tangentes horizontales en x=0 y x=1440 evitan los cortes. -->
+      <path d="M0,40 C200,40 400,100 720,100 C1040,100 1240,20 1440,20 L1440,0 L0,0 Z"></path>
+    </svg>
+  </div>
+
+  <!-- Sección Projects con Fondo Constante -->
+  <div class="w-full bg-wave-bg pt-12 pb-16">
+    <section id="projects" class="max-w-5xl mx-auto px-6 scroll-mt-[22vh] relative z-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group">
       <ProjectCard 
         title="Eco Flow" 
         description="A minimalist guide to a mindful life. Developed with Astro and Tailwind CSS focusing on performance and accessibility."
@@ -55,9 +70,20 @@ import Footer from '../components/Footer.astro';
         tags={["Next.js", "Stripe"]}
       />
     </div>
-  </section>
+    </section>
+  </div> <!-- Cierre del bg-[#EBE6E0] -->
 
-  <ContactSection />
+  <!-- Ola separadora 2: Salida de Projects -->
+  <div class="w-full -mt-1 relative z-0">
+    <svg viewBox="0 0 1440 120" class="w-full h-[6vw] min-h-[40px] text-wave-bg block" fill="currentColor" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Variante de la curva para la salida: Empieza y termina con tangentes rectilíneas. -->
+      <path d="M0,20 C200,20 400,100 720,100 C1040,100 1240,40 1440,40 L1440,0 L0,0 Z"></path>
+    </svg>
+  </div>
 
-  <Footer />
+  <!-- Contact y Footer -->
+  <div class="max-w-5xl mx-auto px-6 pt-4 pb-10">
+    <ContactSection />
+    <Footer />
+  </div>
 </Layout>
