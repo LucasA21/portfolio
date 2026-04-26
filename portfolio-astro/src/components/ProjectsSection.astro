@@ -47,6 +47,7 @@ const totalPages = Math.ceil(projects.length / 3);
                             id={project._id}
                             title={project.title} 
                             description={project.description}
+                            content={project.content}
                             tags={project.tags ?? []}
                             link={project.link}
                             mainImage={project.mainImage}
@@ -180,6 +181,13 @@ const totalPages = Math.ceil(projects.length / 3);
     let currentImgIndex = 0;
     let modalImages: string[] = [];
 
+    function preloadImages(urls: string[]) {
+        urls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+        });
+    }
+
     function updateModalImage(index: number) {
         const mainImgEl = document.getElementById('modal-main-image') as HTMLImageElement;
         const dots = document.querySelectorAll('.modal-dot');
@@ -212,6 +220,9 @@ const totalPages = Math.ceil(projects.length / 3);
             const data = JSON.parse(card.getAttribute('data-project') || '{}');
             modalImages = data.mainImage ? [data.mainImage, ...(data.gallery || [])] : (data.gallery || []);
             currentImgIndex = 0;
+
+            // Preload gallery images
+            preloadImages(modalImages);
             
             // Inyectar texto
             const titleEl = document.getElementById('modal-title');
@@ -221,7 +232,8 @@ const totalPages = Math.ceil(projects.length / 3);
             const dotsContainer = document.getElementById('modal-dots-container');
 
             if (titleEl) titleEl.textContent = data.title;
-            if (descEl) descEl.textContent = data.description;
+            if (descEl) descEl.textContent = ""; // Clear existing
+            if (descEl) descEl.innerHTML = data.contentHtml || data.description;
             if (linkEl) linkEl.href = data.link || '#';
 
             if (tagsEl) {

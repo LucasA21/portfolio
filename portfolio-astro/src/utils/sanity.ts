@@ -14,6 +14,7 @@ const PROJECTS_QUERY = /* groq */ `*[_type == "project"] | order(order asc) {
   _id,
   title,
   description,
+  content,
   tags,
   link,
   "mainImage": mainImage.asset->url,
@@ -36,6 +37,7 @@ export interface Project {
   _id: string;
   title: string;
   description: string;
+  content?: any[];
   tags?: string[];
   link?: string;
   mainImage?: string;

@@ -9,10 +9,10 @@ interface Props {
 
 const { 
   title = "Lucas Araya | Frontend Developer", 
-  description = "Frontend Developer especializado en crear interfaces modernas, minimalistas y altamente performantes. Explora mis proyectos y descubre cómo trabajo." 
+  description = "Frontend Developer apasionado por crear interfaces modernas, minimalistas y de alto rendimiento. Explora mi portfolio para ver mis últimos proyectos y soluciones creativas." 
 } = Astro.props;
 
-const optimizedTitle = title.includes("Lucas Araya") ? title : `${title} | Lucas Araya | Frontend Developer - Portfolio Creativo & Moderno`;
+const optimizedTitle = title.includes("Lucas Araya") ? title : `${title} | Lucas Araya | Frontend Developer & Portfolio`;
 
 const canonicalURL = new URL(Astro.url.pathname, "https://lucasaraya.com.ar");
 const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");

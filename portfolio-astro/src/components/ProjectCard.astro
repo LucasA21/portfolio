@@ -1,10 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
+import { toHTML } from '@portabletext/to-html';
 
 interface Props {
   id: string;
   title: string;
   description: string;
+  content?: any[];
   tags?: string[];
   link?: string;
   mainImage?: string;
@@ -15,13 +17,19 @@ const {
   id,
   title, 
   description, 
-  tags = [], 
+  content,
+  tags, 
   link = "#",
   mainImage = "",
-  gallery = []
+  gallery 
 } = Astro.props;
 
-const projectData = JSON.stringify({ title, description, tags, link, mainImage, gallery });
+const safeContent = content || [];
+const safeTags = tags || [];
+const safeGallery = gallery || [];
+
+const contentHtml = safeContent.length > 0 ? toHTML(safeContent) : description;
+const projectData = JSON.stringify({ title, description, contentHtml, tags: safeTags, link, mainImage, gallery: safeGallery });
 ---
 
 <div 
@@ -41,9 +49,9 @@ const projectData = JSON.stringify({ title, description, tags, link, mainImage, 
     </p>
 
     <div class="mt-auto flex flex-col gap-3">
-      {tags.length > 0 && (
+      {safeTags.length > 0 && (
         <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mask-linear-right">
-          {tags.map((tag) => (
+          {safeTags.map((tag) => (
             <span class="whitespace-nowrap text-[12px] px-4 py-2 rounded-full border border-stroke/70 bg-white/20 text-text-dark/80 tracking-wide font-medium">
               {tag}
             </span>

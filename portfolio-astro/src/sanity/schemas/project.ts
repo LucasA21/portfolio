@@ -15,10 +15,18 @@ export const project = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Descripción',
+      title: 'Descripción Breve (Card)',
       type: 'text',
-      rows: 4,
+      rows: 2,
+      description: 'Aparece en la card del proyecto. Sé conciso.',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'content',
+      title: 'Contenido Detallado (Modal)',
+      type: 'array',
+      description: 'Descripción detallada con formato que aparecerá en el modal.',
+      of: [{ type: 'block' }],
     }),
     defineField({
       name: 'tags',
