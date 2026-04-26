@@ -1,0 +1,99 @@
+<dialog id="project-modal" class="bg-transparent border-none p-0 m-0 w-full h-full max-w-full max-h-full backdrop:bg-black/60 backdrop:backdrop-blur-md group overflow-hidden">
+  <div class="fixed inset-0 flex items-center justify-center p-0 md:p-8 z-50">
+    <!-- Modal Container -->
+    <div 
+      id="modal-content"
+      class="bg-main-bg w-full h-full md:h-[90vh] md:max-w-4xl md:max-h-[850px] md:rounded-[40px] shadow-2xl relative flex flex-col overflow-hidden project-modal-animate"
+    >
+      <!-- Close Button -->
+      <button 
+        id="close-modal"
+        class="absolute top-6 right-6 z-40 p-2.5 bg-black/20 backdrop-blur-md hover:bg-black/40 rounded-full transition-all cursor-pointer group/close shadow-lg border border-white/10"
+        aria-label="Cerrar modal"
+      >
+        <svg class="w-6 h-6 text-white transition-transform group-hover/close:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Top: Carousel -->
+      <div class="w-full h-[30%] md:h-[40%] relative group/carousel bg-stroke/10 shrink-0">
+        <!-- Main Image -->
+        <div id="modal-image-container" class="w-full h-full relative overflow-hidden">
+            <img 
+                id="modal-main-image" 
+                src="" 
+                alt="" 
+                class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out scale-100" 
+            />
+        </div>
+
+        <!-- Carousel Navigation Arrows -->
+        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
+            <button id="modal-prev-img" class="p-2 bg-black/30 hover:bg-black/50 text-white rounded-full backdrop-blur-sm pointer-events-auto transition-all active:scale-90" aria-label="Anterior imagen">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button id="modal-next-img" class="p-2 bg-black/30 hover:bg-black/50 text-white rounded-full backdrop-blur-sm pointer-events-auto transition-all active:scale-90" aria-label="Siguiente imagen">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l6 6-6 6"/></svg>
+            </button>
+        </div>
+
+        <!-- Carousel Dots Indicator -->
+        <div id="modal-dots-container" class="absolute bottom-4 inset-x-0 flex justify-center gap-2 z-30">
+            <!-- Dots injected here -->
+        </div>
+      </div>
+
+      <!-- Bottom: Details -->
+      <div class="flex-1 flex flex-col min-h-0 bg-main-bg relative md:rounded-r-[40px]">
+        <div class="flex-1 overflow-y-auto no-scrollbar px-8 md:px-16 pt-8 pb-32">
+            <div class="mb-8">
+                <div id="modal-tags" class="flex flex-wrap gap-2 mb-4 opacity-60"></div>
+                <h2 id="modal-title" class="text-3xl md:text-5xl font-medium text-accent-brown tracking-tighter mb-4 leading-tight"></h2>
+            </div>
+
+            <div class="max-w-3xl">
+                <h3 class="text-xs font-bold tracking-[0.3em] text-accent-brown/30 uppercase mb-4 flex items-center gap-4">
+                    Sobre el proyecto
+                    <div class="h-px grow bg-stroke/10"></div>
+                </h3>
+                <p id="modal-description" class="text-base md:text-lg leading-[170%] opacity-80 font-normal text-pretty pr-4"></p>
+            </div>
+        </div>
+
+        <!-- Sticky Footer for Link -->
+        <div class="absolute bottom-0 inset-x-0 p-8 md:p-10 md:px-16 bg-linear-to-t from-main-bg via-main-bg/80 to-transparent z-20 md:rounded-br-[40px]">
+            <a 
+                id="modal-link" 
+                href="#" 
+                target="_blank" 
+                class="block w-full text-center bg-accent-brown text-main-bg py-4 rounded-2xl font-bold hover:bg-accent-brown/90 transition-all tracking-[0.2em] text-sm uppercase active:scale-[0.98] shadow-lg shadow-accent-brown/10 ring-1 ring-white/10"
+            >
+                VISITAR SITIO
+            </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  #project-modal[open] {
+    display: block;
+  }
+  
+  .project-modal-animate {
+    animation: modal-in 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(40px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Custom scrollbar inward */
+  .no-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+  }
+</style>

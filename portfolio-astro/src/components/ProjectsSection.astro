@@ -1,82 +1,305 @@
 ---
 import ProjectCard from './ProjectCard.astro';
 import type { Project } from '../utils/sanity';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import ProjectModal from './ProjectModal.astro';
 
 interface Props {
   projects: Project[];
 }
 
 const { projects } = Astro.props;
+const totalPages = Math.ceil(projects.length / 3);
 ---
 
-<div class="w-full bg-wave-bg pt-12 pb-16">
+<div class="w-full bg-wave-bg pt-12 pb-16 min-h-[400px]">
   <section id="projects" class="max-w-5xl mx-auto px-6 scroll-mt-[22vh] relative z-10">
     <h2 class="sr-only">Mis Proyectos Destacados</h2>
     
-    <div id="projects-container" class="relative overflow-hidden p-6 -m-6">
-      {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, pageIndex) => (
-        <div 
-          class={`project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group ${pageIndex === 0 ? 'flex' : 'hidden'}`}
-          data-page={pageIndex}
-        >
-          {projects.slice(pageIndex * 3, (pageIndex * 3) + 3).map((project) => (
-            <ProjectCard 
-              title={project.title} 
-              description={project.description}
-              tags={project.tags ?? []}
-              link={project.link}
-            />
-          ))}
+    <div class="relative group/nav">
+        <!-- Flechas absolutas a los costados de las cards -->
+        <div class="absolute top-[45%] -translate-y-1/2 -left-4 md:-left-16 -right-4 md:-right-16 flex justify-between items-center pointer-events-none z-20">
+            <button
+                id="prev-page"
+                class="p-2 md:p-3 text-accent-brown/30 hover:text-accent-brown hover:bg-black/5 rounded-full transition-all duration-300 cursor-pointer invisible opacity-0 active:scale-90 animate-pointing-left pointer-events-auto"
+                aria-label="Página anterior"
+            >
+                <ChevronLeft className="w-8 h-8 md:w-10 md:h-10" />
+            </button>
+
+            <button
+                id="next-page"
+                class="p-2 md:p-3 text-accent-brown/30 hover:text-accent-brown hover:bg-black/5 rounded-full transition-all duration-300 cursor-pointer flex opacity-100 active:scale-90 animate-pointing-right pointer-events-auto"
+                aria-label="Página siguiente"
+            >
+                <ChevronRight className="w-8 h-8 md:w-10 md:h-10" />
+            </button>
         </div>
-      ))}
+
+        <div id="projects-container" class="relative overflow-hidden p-6 -m-6 z-10">
+            {Array.from({ length: totalPages }).map((_, pageIndex) => (
+                <div 
+                    class={`project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-group ${pageIndex === 0 ? 'flex' : 'hidden'}`}
+                    data-page={pageIndex}
+                >
+                    {projects.slice(pageIndex * 3, (pageIndex * 3) + 3).map((project) => (
+                        <ProjectCard 
+                            id={project._id}
+                            title={project.title} 
+                            description={project.description}
+                            tags={project.tags ?? []}
+                            link={project.link}
+                            mainImage={project.mainImage}
+                            gallery={project.gallery}
+                        />
+                    ))}
+                </div>
+            ))}
+        </div>
     </div>
 
     {projects.length > 3 && (
-      <div class="flex justify-center items-center gap-4 mt-12">
-        {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, i) => (
-          <button
-            class={`project-dot w-2.5 h-2.5 rounded-full border-2 border-accent-brown transition-all duration-300 cursor-pointer ${i === 0 ? 'bg-accent-brown scale-125' : 'bg-transparent opacity-40 hover:opacity-100'}`}
-            data-target={i}
-            aria-label={`Ir a página ${i + 1}`}
-          />
-        ))}
+      <div class="mt-8 flex justify-center items-center">
+        <!-- Puntos centrados -->
+        <div class="flex items-center gap-4">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              class={`project-dot w-2.5 h-2.5 rounded-full border-2 border-accent-brown transition-all duration-300 cursor-pointer ${i === 0 ? 'bg-accent-brown scale-125' : 'bg-transparent opacity-40 hover:opacity-100'}`}
+              data-target={i}
+              aria-label={`Ir a página ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
     )}
   </section>
 </div>
 
+<ProjectModal />
+
+<style>
+  @keyframes pointing-right {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+  }
+  @keyframes pointing-left {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-4px); }
+  }
+  .animate-pointing-right {
+    animation: pointing-right 1.5s ease-in-out infinite;
+  }
+  .animate-pointing-left {
+    animation: pointing-left 1.5s ease-in-out infinite;
+  }
+  .animate-pointing-right:hover, .animate-pointing-left:hover {
+    animation-play-state: paused;
+  }
+</style>
+
 <script>
-  function setupPagination() {
+  function setupProjects() {
+    // Lógica de Paginación
     const dots = document.querySelectorAll('.project-dot');
     const pages = document.querySelectorAll('.project-page');
+    const prevBtn = document.getElementById('prev-page');
+    const nextBtn = document.getElementById('next-page');
 
     if (!dots.length || !pages.length) return;
 
-    dots.forEach(dot => {
-      dot.addEventListener('click', () => {
-        const targetPage = dot.getAttribute('data-target');
+    let currentPage = 0;
+    const totalPages = pages.length;
 
-        dots.forEach(d => {
-          d.classList.remove('bg-accent-brown', 'scale-125');
-          d.classList.add('bg-transparent', 'opacity-40');
-        });
-        dot.classList.add('bg-accent-brown', 'scale-125');
-        dot.classList.remove('opacity-40');
+    function updatePage(index: number) {
+      currentPage = index;
 
-        pages.forEach(page => {
-          if (page.getAttribute('data-page') === targetPage) {
-            page.classList.remove('hidden');
-            page.classList.add('grid');
-          } else {
-            page.classList.remove('grid');
-            page.classList.add('hidden');
-          }
-        });
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.add('bg-accent-brown', 'scale-125');
+          dot.classList.remove('bg-transparent', 'opacity-40');
+        } else {
+          dot.classList.remove('bg-accent-brown', 'scale-125');
+          dot.classList.add('bg-transparent', 'opacity-40');
+        }
       });
+
+      pages.forEach((page, i) => {
+        if (i === index) {
+          page.classList.remove('hidden');
+          page.classList.add('grid');
+        } else {
+          page.classList.remove('grid');
+          page.classList.add('hidden');
+        }
+      });
+
+      if (prevBtn) {
+        if (index > 0) {
+          prevBtn.classList.remove('invisible');
+          prevBtn.classList.add('opacity-100');
+          prevBtn.classList.remove('pointer-events-none');
+        } else {
+          prevBtn.classList.add('invisible');
+          prevBtn.classList.remove('opacity-100');
+          prevBtn.classList.add('pointer-events-none');
+        }
+      }
+
+      if (nextBtn) {
+        if (index < totalPages - 1) {
+          nextBtn.classList.remove('invisible');
+          nextBtn.classList.add('opacity-100');
+          nextBtn.classList.remove('pointer-events-none');
+        } else {
+          nextBtn.classList.add('invisible');
+          nextBtn.classList.remove('opacity-100');
+          nextBtn.classList.add('pointer-events-none');
+        }
+      }
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => updatePage(i));
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      if (currentPage > 0) updatePage(currentPage - 1);
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      if (currentPage < totalPages - 1) updatePage(currentPage + 1);
+    });
+
+    // Lógica del Modal Rediseñado (Vertical + Carrusel)
+    const modal = document.getElementById('project-modal') as HTMLDialogElement;
+    const closeBtn = document.getElementById('close-modal');
+    const cards = document.querySelectorAll('.project-card');
+
+    if (!modal || !closeBtn) return;
+
+    let currentImgIndex = 0;
+    let modalImages: string[] = [];
+
+    function updateModalImage(index: number) {
+        const mainImgEl = document.getElementById('modal-main-image') as HTMLImageElement;
+        const dots = document.querySelectorAll('.modal-dot');
+        
+        if (mainImgEl && modalImages[index]) {
+            mainImgEl.style.opacity = '0';
+            mainImgEl.style.transform = 'scale(1.05)';
+            
+            setTimeout(() => {
+                mainImgEl.src = modalImages[index];
+                mainImgEl.style.opacity = '1';
+                mainImgEl.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        dots.forEach((dot, i) => {
+            if (i === index) {
+                dot.classList.add('bg-white', 'w-6');
+                dot.classList.remove('bg-white/40', 'w-2');
+            } else {
+                dot.classList.remove('bg-white', 'w-6');
+                dot.classList.add('bg-white/40', 'w-2');
+            }
+        });
+        currentImgIndex = index;
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const data = JSON.parse(card.getAttribute('data-project') || '{}');
+            modalImages = data.mainImage ? [data.mainImage, ...(data.gallery || [])] : (data.gallery || []);
+            currentImgIndex = 0;
+            
+            // Inyectar texto
+            const titleEl = document.getElementById('modal-title');
+            const descEl = document.getElementById('modal-description');
+            const tagsEl = document.getElementById('modal-tags');
+            const linkEl = document.getElementById('modal-link') as HTMLAnchorElement;
+            const dotsContainer = document.getElementById('modal-dots-container');
+
+            if (titleEl) titleEl.textContent = data.title;
+            if (descEl) descEl.textContent = data.description;
+            if (linkEl) linkEl.href = data.link || '#';
+
+            if (tagsEl) {
+                tagsEl.innerHTML = (data.tags || []).map((tag: string) => `
+                    <span class="text-[11px] px-3 py-1 rounded-full border border-accent-brown/20 bg-accent-brown/5 text-accent-brown/60 tracking-wider font-bold">
+                        ${tag}
+                    </span>
+                `).join('');
+            }
+
+            // Inyectar Puntos
+            if (dotsContainer) {
+                dotsContainer.innerHTML = modalImages.map((_, i) => `
+                    <button class="modal-dot h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white w-6' : 'bg-white/40 w-2'}" data-index="${i}"></button>
+                `).join('');
+                
+                dotsContainer.querySelectorAll('.modal-dot').forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        updateModalImage(parseInt(dot.getAttribute('data-index') || '0'));
+                    });
+                });
+            }
+
+            // Resetear imagen principal
+            const mainImgEl = document.getElementById('modal-main-image') as HTMLImageElement;
+            if (mainImgEl && modalImages[0]) {
+                mainImgEl.src = modalImages[0];
+                mainImgEl.style.opacity = '1';
+                mainImgEl.style.transform = 'scale(1)';
+            }
+
+            // Mostrar flechas solo si hay más de una imagen
+            const prevImgBtn = document.getElementById('modal-prev-img');
+            const nextImgBtn = document.getElementById('modal-next-img');
+            if (prevImgBtn && nextImgBtn) {
+                if (modalImages.length > 1) {
+                    prevImgBtn.classList.remove('hidden');
+                    nextImgBtn.classList.remove('hidden');
+                } else {
+                    prevImgBtn.classList.add('hidden');
+                    nextImgBtn.classList.add('hidden');
+                }
+            }
+
+            modal.showModal();
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // Navegación del carrusel
+    document.getElementById('modal-prev-img')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let next = currentImgIndex - 1;
+        if (next < 0) next = modalImages.length - 1;
+        updateModalImage(next);
+    });
+
+    document.getElementById('modal-next-img')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let next = currentImgIndex + 1;
+        if (next >= modalImages.length) next = 0;
+        updateModalImage(next);
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.close();
+        document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.close();
+            document.body.style.overflow = '';
+        }
     });
   }
 
-  // Inicializar en la carga inicial y tras navegaciones de View Transitions si se usan
-  setupPagination();
-  document.addEventListener('astro:after-swap', setupPagination);
+  // Inicializar
+  setupProjects();
+  document.addEventListener('astro:after-swap', setupProjects);
 </script>

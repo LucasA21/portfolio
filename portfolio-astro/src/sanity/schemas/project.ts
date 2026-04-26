@@ -37,10 +37,10 @@ export const project = defineType({
         rule.uri({ scheme: ['http', 'https'] }),
     }),
     defineField({
-      name: 'image',
-      title: 'Imagen / Thumbnail',
+      name: 'mainImage',
+      title: 'Imagen Principal (Modal)',
       type: 'image',
-      description: 'Imagen opcional para la tarjeta (uso futuro)',
+      description: 'Imagen destacada que aparecerá primero en el modal del proyecto',
       options: { hotspot: true },
       fields: [
         defineField({
@@ -48,6 +48,26 @@ export const project = defineType({
           title: 'Texto alternativo',
           type: 'string',
           description: 'Describí la imagen para accesibilidad',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'Galería de Imágenes',
+      type: 'array',
+      description: 'Imágenes adicionales para el carrusel del modal',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Texto alternativo',
+              type: 'string',
+              description: 'Describí la imagen para accesibilidad',
+            }),
+          ],
         }),
       ],
     }),
@@ -79,7 +99,7 @@ export const project = defineType({
     select: {
       title: 'title',
       subtitle: 'description',
-      media: 'image',
+      media: 'mainImage',
     },
   },
 });

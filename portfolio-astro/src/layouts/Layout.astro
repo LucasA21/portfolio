@@ -3,11 +3,16 @@ import "../styles/global.css";
 import Analytics from "@vercel/analytics/astro"
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
 }
 
-const { title, description = "Frontend Developer Portfolio" } = Astro.props;
+const { 
+  title = "Lucas Araya | Frontend Developer", 
+  description = "Frontend Developer especializado en crear interfaces modernas, minimalistas y altamente performantes. Explora mis proyectos y descubre cómo trabajo." 
+} = Astro.props;
+
+const optimizedTitle = title.includes("Lucas Araya") ? title : `${title} | Lucas Araya | Frontend Developer - Portfolio Creativo & Moderno`;
 
 const canonicalURL = new URL(Astro.url.pathname, "https://lucasaraya.com.ar");
 const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
@@ -19,7 +24,7 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <title>{title} | Lucas Araya | Frontend Developer</title>
+    <title>{optimizedTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Lucas Araya" />
     
@@ -31,55 +36,53 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={`${title} | Lucas Araya | Frontend Developer`} />
+    <meta property="og:title" content={optimizedTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={socialImageURL} />
 
     <!-- Twitter (X) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={`${title} | Lucas Araya | Frontend Developer`} />
+    <meta name="twitter:title" content={optimizedTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Halant:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <main class="w-full overflow-hidden">
       <slot />
     </main>
     <script>
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target); 
-            }
-          });
-        },
-        { rootMargin: "0px 0px -25% 0px", threshold: 0.1 } 
-      );
-      
-      const observerBottom = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              observerBottom.unobserve(entry.target);
-            }
-          });
-        },
-        { rootMargin: "0px", threshold: 0.1 }
-      );
+      const observerOptions = {
+        rootMargin: "0px 0px -25% 0px", // Trigger only when 25% into viewport from bottom
+        threshold: 0.1
+      };
 
-      document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
-      document.querySelectorAll(".fade-up-bottom").forEach((el) => observerBottom.observe(el));
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      
+      const observerBottom = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observerBottom.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "0px", threshold: 0.1 });
+
+      function startAnimations() {
+        document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+        document.querySelectorAll(".fade-up-bottom").forEach((el) => observerBottom.observe(el));
+      }
+
+      // Ejecutar al cargar y después de transiciones de Astro
+      startAnimations();
+      document.addEventListener('astro:after-swap', startAnimations);
     </script>
     <Analytics />
   </body>

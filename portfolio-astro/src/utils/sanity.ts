@@ -16,6 +16,8 @@ const PROJECTS_QUERY = /* groq */ `*[_type == "project"] | order(order asc) {
   description,
   tags,
   link,
+  "mainImage": mainImage.asset->url,
+  "gallery": gallery[].asset->url,
   order,
   featured
 }`;
@@ -36,6 +38,8 @@ export interface Project {
   description: string;
   tags?: string[];
   link?: string;
+  mainImage?: string;
+  gallery?: string[];
   order?: number;
   featured?: boolean;
 }
@@ -74,7 +78,7 @@ export async function getSiteData(): Promise<SiteData> {
     },
     seo: {
       title: rawSettings?.seo?.title ?? 'Home',
-      description: rawSettings?.seo?.description ?? 'Frontend Developer Portfolio',
+      description: rawSettings?.seo?.description ?? 'Frontend Developer especializado en crear interfaces modernas, minimalistas y altamente performantes. Explora mis proyectos y descubre cómo trabajo.',
     },
     contact: {
       tagline: rawSettings?.contact?.tagline ?? 'Hagamos equipo',
@@ -101,9 +105,34 @@ export async function getSiteData(): Promise<SiteData> {
   return {
     settings,
     projects: projects.length > 0 ? projects : [
-      { _id: '1', title: 'Eco Flow', description: 'Una guía minimalista para una vida consciente. Desarrollada con Astro y Tailwind puro, optimizada cien por ciento para rendimiento brutal y accesibilidad total.', tags: ['Astro', 'Tailwind', 'UX Design'] },
-      { _id: '2', title: 'Serene Space', description: 'Dashboard para una app de mindfulness. Arquitectura de estados globales complejos manteniendo la fluidez en cada micro-interacción de la interfaz.', tags: ['React', 'Framer Motion'] },
-      { _id: '3', title: 'Quiet Commerce', description: 'E-commerce planteado para reducir la fricción visual y la carga cognitiva. Escalamos la conversión en ventas en un ambiente libre de ruidos innecesarios.', tags: ['Next.js', 'Stripe'] },
+      { 
+        _id: '1', 
+        title: 'Eco Flow', 
+        description: 'Una guía minimalista para una vida consciente. Desarrollada con Astro y Tailwind puro, optimizada cien por ciento para rendimiento brutal y accesibilidad total. El diseño se centra en la calma visual utilizando una paleta neutra y tipografías elegantes que invitan a la lectura pausada.', 
+        tags: ['Astro', 'Tailwind', 'UX Design', 'Minimalism', 'Performance'],
+        link: 'https://eco-flow.demo',
+        mainImage: 'https://images.unsplash.com/photo-1542241193-41c304d53894?auto=format&fit=crop&q=80&w=1200',
+        gallery: [
+          'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800',
+          'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800'
+        ]
+      },
+      { 
+        _id: '2', 
+        title: 'Serene Space', 
+        description: 'Dashboard para una app de mindfulness. Arquitectura de estados globales complejos manteniendo la fluidez en cada micro-interacción de la interfaz. Implementamos gráficas interactivas que visualizan el progreso del usuario de manera orgánica y no estresante.', 
+        tags: ['React', 'Framer Motion', 'State Mgmt', 'UI Design'],
+        link: 'https://serene-space.demo',
+        mainImage: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=1200'
+      },
+      { 
+        _id: '3', 
+        title: 'Quiet Commerce', 
+        description: 'E-commerce planteado para reducir la fricción visual y la carga cognitiva. Escalamos la conversión en ventas en un ambiente libre de ruidos innecesarios. El proceso de checkout fue rediseñado totalmente bajo principios de psicología cognitiva.', 
+        tags: ['Next.js', 'Stripe', 'Cognitive Psychology'],
+        link: 'https://quiet-commerce.demo',
+        mainImage: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200'
+      },
     ],
   };
 }

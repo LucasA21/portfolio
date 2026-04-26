@@ -17,6 +17,9 @@ importers:
       '@astrojs/vercel':
         specifier: ^10.0.5
         version: 10.0.5(astro@6.1.9(@types/node@25.6.0)(@vercel/functions@3.4.4)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.3))(react@19.2.5)(rollup@4.60.2)
+      '@fontsource/halant':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@iconify-json/lucide':
         specifier: ^1.2.103
         version: 1.2.103
@@ -1136,6 +1139,9 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@fontsource/halant@5.2.8':
+    resolution: {integrity: sha512-3/LJslCoecAYSpOfMOj2hIIbd17rtaIFU9Z7EjoMxx/zU8MA9VM8DHIM+MvEBcnSMG/MQ6xEppJgDKWrDGVEoQ==}
 
   '@iarna/toml@2.2.3':
     resolution: {integrity: sha512-FmuxfCuolpLl0AnQ2NHSzoUKWEJDFl63qXjzdoWBVyFCXzMGm1spBzk7LeHNoVCiWCF7mRVms9e6jEV9+MoPbg==}
@@ -7325,6 +7331,8 @@ snapshots:
       react-dom: 19.2.5(react@19.2.5)
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@fontsource/halant@5.2.8': {}
 
   '@iarna/toml@2.2.3': {}
 

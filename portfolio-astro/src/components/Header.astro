@@ -26,9 +26,17 @@ const iconMap: Record<string, string> = {
 <header
   class="flex justify-between items-center bg-glass-card backdrop-blur-md border border-stroke rounded-full px-10 py-2.5"
 >
-  <div class="leading-none tracking-wider text-2xl font-medium text-accent-brown">
-    <span class="block">Lucas</span>
-    <span class="block ml-4 -mt-1.5">Araya</span>
+  <div class="header-name group flex flex-col leading-none tracking-wider text-2xl font-medium text-accent-brown cursor-default">
+    <div class="flex">
+      {["L", "u", "c", "a", "s"].map((l, i) => (
+        <span class="letter inline-block" style={`transition-delay: ${i * 40}ms`}>{l}</span>
+      ))}
+    </div>
+    <div class="flex ml-4 -mt-1.5">
+      {["A", "r", "a", "y", "a"].map((l, i) => (
+        <span class="letter inline-block" style={`transition-delay: ${(i + 5) * 40}ms`}>{l}</span>
+      ))}
+    </div>
   </div>
 
   <nav class="flex gap-6 items-center">
@@ -45,3 +53,15 @@ const iconMap: Record<string, string> = {
     ))}
   </nav>
 </header>
+
+<style>
+  .letter {
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.15);
+  }
+  
+  .header-name:hover .letter {
+    transform: translateY(-5px);
+    color: var(--color-accent-brown);
+    filter: drop-shadow(0 4px 4px rgba(83, 31, 31, 0.1));
+  }
+</style>
