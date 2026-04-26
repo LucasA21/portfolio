@@ -77,7 +77,7 @@
   </div>
 </dialog>
 
-<style>
+<style is:global>
   #project-modal[open] {
     display: block;
   }
@@ -97,12 +97,22 @@
   .rich-text p:last-child {
     margin-bottom: 0;
   }
-  .rich-text ul, .rich-text ol {
+  .rich-text ul {
+    list-style-type: disc;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+  .rich-text ol {
+    list-style-type: decimal;
     margin-bottom: 1.5rem;
     padding-left: 1.5rem;
   }
   .rich-text li {
     margin-bottom: 0.5rem;
+  }
+  .rich-text li::marker {
+    color: #531F1F;
+    font-weight: bold;
   }
   .rich-text strong, .rich-text b {
     font-weight: 700 !important;
