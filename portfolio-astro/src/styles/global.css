@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource/halant/300.css";
 @import "@fontsource/halant/400.css";
 @import "@fontsource/halant/500.css";
 @import "@fontsource/halant/600.css";
@@ -75,6 +74,14 @@ html, body {
 .hero-animate-1 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.1s; opacity: 0; }
 .hero-animate-2 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.3s; opacity: 0; }
 .hero-animate-3 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.5s; opacity: 0; }
+
+@media (max-width: 768px) {
+    .hero-animate-1, .hero-animate-2, .hero-animate-3 {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
 
 
 ::-webkit-scrollbar {

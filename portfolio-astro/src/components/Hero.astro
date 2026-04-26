@@ -26,7 +26,9 @@ const restGreeting = greetingParts.slice(1).join(' ');
         alt="Icono de mano saludando" 
         width="34"
         height="34"
-        class="inline-block h-7 md:h-8 -mt-1 origin-bottom-right hover:rotate-12 transition-transform duration-300" 
+        class="inline-block h-7 md:h-8 -mt-1" 
+        fetchpriority="high"
+        loading="eager"
       />
     </p>
     
@@ -52,6 +54,8 @@ const restGreeting = greetingParts.slice(1).join(' ');
       width="1015"
       height="1009"
       class="w-64 md:w-80 lg:w-[420px]" 
+      fetchpriority="high"
+      loading="eager"
     />
   </div>
 </section>
