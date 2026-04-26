@@ -1,5 +1,9 @@
 ---
 import "../styles/global.css";
+import "@fontsource/halant/400.css";
+import "@fontsource/halant/500.css";
+import "@fontsource/halant/600.css";
+import "@fontsource/halant/700.css";
 import Analytics from "@vercel/analytics/astro"
 
 interface Props {
@@ -34,10 +38,6 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
     
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Preconexiones críticas -->
-    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
-    <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={optimizedTitle} />
@@ -57,7 +57,7 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
     </main>
     <script>
       const observerOptions = {
-        rootMargin: "0px 0px -25% 0px", // Trigger only when 25% into viewport from bottom
+        rootMargin: "0px 0px -25% 0px", 
         threshold: 0.1
       };
 
@@ -84,7 +84,6 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
         document.querySelectorAll(".fade-up-bottom").forEach((el) => observerBottom.observe(el));
       }
 
-      // Ejecutar al cargar y después de transiciones de Astro
       startAnimations();
       document.addEventListener('astro:after-swap', startAnimations);
     </script>

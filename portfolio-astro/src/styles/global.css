@@ -1,8 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource/halant/400.css";
-@import "@fontsource/halant/500.css";
-@import "@fontsource/halant/600.css";
-@import "@fontsource/halant/700.css";
+
 
 @theme {
     --color-main-bg: #F6F5F1;
@@ -22,8 +19,6 @@ html, body {
     scroll-behavior: smooth;
 } 
 
-/* --- A11Y FOCUS RINGS --- */
-/* Cuando el usuario navega con teclado, reemplazamos el anillo predeterminado azul por nuestra paleta */
 *:focus-visible {
     outline: 2px solid var(--color-accent-brown);
     outline-offset: 4px;
@@ -71,9 +66,9 @@ html, body {
     100% { opacity: 1; transform: translateY(0); }
 }
 
-.hero-animate-1 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.1s; opacity: 0; }
-.hero-animate-2 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.3s; opacity: 0; }
-.hero-animate-3 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.5s; opacity: 0; }
+.hero-animate-1 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.05s; opacity: 0; }
+.hero-animate-2 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.15s; opacity: 0; }
+.hero-animate-3 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.25s; opacity: 0; }
 
 @media (max-width: 768px) {
     .hero-animate-1, .hero-animate-2, .hero-animate-3 {

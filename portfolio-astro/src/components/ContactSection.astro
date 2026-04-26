@@ -1,4 +1,7 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
+
 interface ContactData {
   tagline: string;
   description: string;
@@ -11,6 +14,18 @@ interface Props {
 }
 
 const { contact } = Astro.props;
+
+// Cargar SVGs para inlinear
+// Desktop: contact-señalar.svg
+const contactDesktopSvg = fs.readFileSync(path.resolve('./public/contact-señalar.svg'), 'utf-8')
+  .replace(/width=".*?"/, 'width="100%"')
+  .replace(/height=".*?"/, 'height="100%"');
+
+// Mobile: contact-apoyado.svg (pintado de marrón #531F1F)
+const contactMobileSvg = fs.readFileSync(path.resolve('./public/contact-apoyado.svg'), 'utf-8')
+  .replace(/width=".*?"/, 'width="100%"')
+  .replace(/height=".*?"/, 'height="100%"')
+  .replace(/fill="#000000"/g, 'fill="#531F1F"');
 ---
 
 <section id="contact" class="fade-up-bottom flex flex-col md:flex-row justify-between bg-glass-card/50 backdrop-blur-sm border border-stroke rounded-[40px] pt-6 md:pt-8 px-6 sm:px-10 pb-0 lg:pt-12 lg:px-16 lg:pb-0 gap-2 md:gap-8 mt-24 relative scroll-mt-[22vh] overflow-hidden">
@@ -41,13 +56,18 @@ const { contact } = Astro.props;
   </div>
 
   <div class="shrink-0 w-[90%] sm:w-[60%] md:w-1/2 lg:w-[40%] flex justify-center md:justify-end z-10 self-center md:self-end md:-mr-8 lg:-mr-12 -mt-4 md:mt-0">
-    <img 
-      src="/contact-señalar.svg" 
-      alt="Ilustración de Lucas señalando el correo y un buzón" 
-      width="967"
-      height="1135"
-      class="w-full max-w-[380px]"
-    />
+    <!-- Imagen para Desktop -->
+    <div class="hidden md:block w-full max-w-[380px] contact-svg-container" set:html={contactDesktopSvg} />
+    <!-- Imagen para Mobile -->
+    <div class="block md:hidden w-full max-w-[320px] contact-svg-container" set:html={contactMobileSvg} />
   </div>
 
 </section>
+
+<style is:global>
+  .contact-svg-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
