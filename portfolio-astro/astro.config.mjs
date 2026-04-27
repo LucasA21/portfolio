@@ -32,8 +32,5 @@ export default defineConfig({
     filter: (page) => !page.includes('/admin')
   })],
 
-  adapter: vercel(),
-  build: {
-    inlineStylesheets: 'always'
-  }
+  adapter: vercel()
 });
