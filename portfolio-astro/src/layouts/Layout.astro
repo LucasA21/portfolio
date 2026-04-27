@@ -13,11 +13,14 @@ interface Props {
 }
 
 const { 
-  title = "Lucas Araya | Frontend Developer", 
+  title, 
   description = "Frontend Developer apasionado por crear interfaces modernas, minimalistas y de alto rendimiento. Explora mi portfolio para ver mis últimos proyectos y soluciones creativas." 
 } = Astro.props;
 
-const optimizedTitle = title.includes("Lucas Araya") ? title : `${title} | Lucas Araya | Frontend Developer & Portfolio`;
+const baseTitle = "Lucas Araya | Frontend Developer";
+const optimizedTitle = title === "Home" || !title || title.includes("Lucas Araya") 
+  ? baseTitle 
+  : `${title} | ${baseTitle}`;
 
 const canonicalURL = new URL(Astro.url.pathname, "https://lucasaraya.com.ar");
 const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
@@ -50,6 +53,8 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
     <meta property="og:title" content={optimizedTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter (X) -->
     <meta name="twitter:card" content="summary_large_image" />

@@ -12,7 +12,7 @@ const { settings, projects } = await getSiteData();
 const { hero, seo, contact, footer, socialLinks } = settings;
 ---
 
-<Layout title={seo?.title ?? 'Home'} description={seo?.description}>
+<Layout title={seo?.title} description={seo?.description}>
   
   <div class="max-w-5xl mx-auto px-6 pt-10">
     <div class="hero-animate-1">
