@@ -12,7 +12,6 @@ const SETTINGS_QUERY = /* groq */ `*[_id == "siteSettings"][0]{
 
 const PROJECTS_QUERY = /* groq */ `*[_type == "project"] | order(order asc) {
   _id,
-  _createdAt,
   title,
   description,
   content,
@@ -36,7 +35,6 @@ export interface SiteSettings {
 
 export interface Project {
   _id: string;
-  _createdAt?: string;
   title: string;
   description: string;
   content?: any[];
