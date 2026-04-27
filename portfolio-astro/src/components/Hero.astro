@@ -14,7 +14,8 @@ const { title, subtitle, ctaLabel } = Astro.props;
 const heroSvg = fs.readFileSync(path.resolve('./public/hero-illustration.svg'), 'utf-8')
   .replace(/width=".*?"/, 'width="100%"')
   .replace(/height=".*?"/, 'height="100%"')
-  .replace(/^[\s\S]*?(?=<svg)/i, ""); // Eliminar XML prolog y DOCTYPE
+  .replace(/version=".*?"/i, "")
+  .replace(/^[\s\S]*?(?=<svg)/i, ""); 
 ---
 
 <section id="about" class="flex flex-col md:flex-row items-center md:items-center justify-between gap-8 lg:gap-16 mt-6 md:mt-12 pb-12 md:pb-0 scroll-mt-[22vh]">

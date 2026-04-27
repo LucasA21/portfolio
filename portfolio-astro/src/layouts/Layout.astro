@@ -1,9 +1,5 @@
 ---
 import "../styles/global.css";
-import "@fontsource/halant/400.css";
-import "@fontsource/halant/500.css";
-import "@fontsource/halant/600.css";
-import "@fontsource/halant/700.css";
 import Analytics from "@vercel/analytics/astro"
 import SpeedInsights from "@vercel/speed-insights/astro"
 
@@ -51,6 +47,55 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
     <meta name="twitter:title" content={optimizedTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
+
+    <style is:global>
+      /* Inlining font-face to break the critical chain (HTML -> CSS -> Font) */
+      @font-face {
+        font-family: 'Halant';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src: url(@fontsource/halant/files/halant-latin-400-normal.woff2) format('woff2');
+      }
+      @font-face {
+        font-family: 'Halant';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 500;
+        src: url(@fontsource/halant/files/halant-latin-500-normal.woff2) format('woff2');
+      }
+      @font-face {
+        font-family: 'Halant';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 600;
+        src: url(@fontsource/halant/files/halant-latin-600-normal.woff2) format('woff2');
+      }
+      @font-face {
+        font-family: 'Halant';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 700;
+        src: url(@fontsource/halant/files/halant-latin-700-normal.woff2) format('woff2');
+      }
+
+      /* Critical animations inlined to start immediately */
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .hero-animate-1 { animation: fade-in 0.8s ease-out forwards; }
+      .hero-animate-2 { animation: fade-in 0.8s ease-out 0.2s forwards; opacity: 0; }
+      .hero-animate-3 { animation: fade-in 0.8s ease-out 0.4s forwards; opacity: 0; }
+
+      @media (max-width: 768px) {
+        .hero-animate-1, .hero-animate-2, .hero-animate-3 {
+          animation: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <main class="w-full overflow-hidden">

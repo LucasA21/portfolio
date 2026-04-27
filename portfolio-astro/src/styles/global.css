@@ -61,24 +61,7 @@ html, body {
 .stagger-group > *:nth-child(2) { transition-delay: 150ms; }
 .stagger-group > *:nth-child(3) { transition-delay: 300ms; }
 
-@keyframes loadFadeUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-.hero-animate-1 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.05s; opacity: 0; }
-.hero-animate-2 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.15s; opacity: 0; }
-.hero-animate-3 { animation: loadFadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.25s; opacity: 0; }
-
-@media (max-width: 768px) {
-    .hero-animate-1, .hero-animate-2, .hero-animate-3 {
-        animation: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-    }
-}
-
-
+/* Scrollbar styles remain in global.css */
 ::-webkit-scrollbar {
     width: 6px; 
 }
