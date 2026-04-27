@@ -42,20 +42,23 @@
       </div>
 
       <!-- Lightbox (Full Screen Gallery) -->
-      <dialog id="project-lightbox" class="fixed inset-0 w-full h-full bg-transparent border-none p-0 m-0 z-100 backdrop:bg-black/95 backdrop:backdrop-blur-2xl">
-        <div class="w-full h-full flex flex-col items-center justify-center relative p-4 md:p-12">
+      <dialog 
+        id="project-lightbox" 
+        class="fixed inset-0 w-screen h-screen bg-transparent border-none p-0 m-0 z-100 backdrop:bg-black/95 backdrop:backdrop-blur-2xl max-w-none max-h-none overflow-hidden"
+      >
+        <div class="w-full h-full flex flex-col items-center justify-center relative bg-transparent overflow-hidden">
             <!-- Close Lightbox -->
             <button id="close-lightbox" class="absolute top-6 right-6 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-xl border border-white/20 z-110 transition-all active:scale-90 shadow-2xl">
                 <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12" /></svg>
             </button>
-
+ 
             <!-- Main Lightbox Image -->
             <div class="flex-1 w-full h-full flex items-center justify-center p-0 md:p-8 min-h-0">
                 <img 
                     id="lightbox-image" 
                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
                     alt="Vista ampliada" 
-                    class="max-w-[100vw] max-h-screen md:max-w-full md:max-h-full object-contain shadow-2xl transition-transform duration-300 pointer-events-none" 
+                    class="w-full h-auto max-h-[65vh] md:max-h-full object-contain shadow-2xl transition-all duration-300 pointer-events-none" 
                 />
             </div>
             
