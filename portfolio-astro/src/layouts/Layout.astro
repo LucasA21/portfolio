@@ -2,6 +2,10 @@
 import "../styles/global.css";
 import Analytics from "@vercel/analytics/astro"
 import SpeedInsights from "@vercel/speed-insights/astro"
+import font400 from "@fontsource/halant/files/halant-latin-400-normal.woff2?url";
+import font500 from "@fontsource/halant/files/halant-latin-500-normal.woff2?url";
+import font600 from "@fontsource/halant/files/halant-latin-600-normal.woff2?url";
+import font700 from "@fontsource/halant/files/halant-latin-700-normal.woff2?url";
 
 interface Props {
   title?: string;
@@ -24,6 +28,12 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preload Critical Fonts -->
+    <link rel="preload" href={font400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={font500} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={font600} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={font700} as="font" type="font/woff2" crossorigin />
     
     <title>{optimizedTitle}</title>
     <meta name="description" content={description} />
@@ -49,36 +59,6 @@ const socialImageURL = new URL("/og-image.png", "https://lucasaraya.com.ar");
     <meta name="twitter:image" content={socialImageURL} />
 
     <style is:global>
-      /* Inlining font-face to break the critical chain (HTML -> CSS -> Font) */
-      @font-face {
-        font-family: 'Halant';
-        font-style: normal;
-        font-display: swap;
-        font-weight: 400;
-        src: url(@fontsource/halant/files/halant-latin-400-normal.woff2) format('woff2');
-      }
-      @font-face {
-        font-family: 'Halant';
-        font-style: normal;
-        font-display: swap;
-        font-weight: 500;
-        src: url(@fontsource/halant/files/halant-latin-500-normal.woff2) format('woff2');
-      }
-      @font-face {
-        font-family: 'Halant';
-        font-style: normal;
-        font-display: swap;
-        font-weight: 600;
-        src: url(@fontsource/halant/files/halant-latin-600-normal.woff2) format('woff2');
-      }
-      @font-face {
-        font-family: 'Halant';
-        font-style: normal;
-        font-display: swap;
-        font-weight: 700;
-        src: url(@fontsource/halant/files/halant-latin-700-normal.woff2) format('woff2');
-      }
-
       /* Critical animations inlined to start immediately */
       @keyframes fade-in {
         from { opacity: 0; transform: translateY(10px); }
