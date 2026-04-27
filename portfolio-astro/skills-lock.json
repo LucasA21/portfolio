@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "astro-seo": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "computedHash": "47c387a62c764cf6fa0c889347f837a25ad6267f81461aa72c0783f8915bb4f7"
+    }
+  }
+}

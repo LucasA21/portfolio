@@ -407,6 +407,19 @@ const totalPages = Math.ceil(projects.length / 3);
         }
     });
 
+    // Soporte de Swipe para el Lightbox
+    addSwipeSupport(
+        lightbox,
+        () => {
+            if (modalImages.length <= 1) return;
+            updateLightboxImage((currentImgIndex + 1) % modalImages.length);
+        },
+        () => {
+            if (modalImages.length <= 1) return;
+            updateLightboxImage((currentImgIndex - 1 + modalImages.length) % modalImages.length);
+        }
+    );
+
     // Teclado para Lightbox
     document.addEventListener('keydown', (e) => {
         if (lightbox.open) {

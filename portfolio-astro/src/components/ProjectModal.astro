@@ -50,17 +50,22 @@
             </button>
 
             <!-- Main Lightbox Image -->
-            <div class="w-full h-full flex items-center justify-center">
-                <img id="lightbox-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Vista ampliada" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg" />
+            <div class="flex-1 w-full h-full flex items-center justify-center p-4 min-h-0">
+                <img 
+                    id="lightbox-image" 
+                    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                    alt="Vista ampliada" 
+                    class="max-w-full max-h-full object-contain shadow-2xl rounded-lg transition-transform duration-300 pointer-events-none" 
+                />
             </div>
-
+            
             <!-- Lightbox Arrows -->
-            <div class="absolute inset-x-4 md:inset-x-12 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
-                <button id="lightbox-prev" class="p-4 bg-white/5 hover:bg-white/10 text-white rounded-full backdrop-blur-xl border border-white/10 pointer-events-auto transition-all active:scale-90">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            <div class="absolute inset-x-4 md:inset-x-12 top-1/2 -translate-y-1/2 flex justify-between items-center pointer-events-none z-120">
+                <button id="lightbox-prev" class="p-4 md:p-6 bg-black/40 md:bg-white/5 hover:bg-white/10 text-white rounded-full backdrop-blur-xl border border-white/20 md:border-white/10 pointer-events-auto transition-all active:scale-75 shadow-2xl">
+                    <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
-                <button id="lightbox-next" class="p-4 bg-white/5 hover:bg-white/10 text-white rounded-full backdrop-blur-xl border border-white/10 pointer-events-auto transition-all active:scale-90">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l6 6-6 6"/></svg>
+                <button id="lightbox-next" class="p-4 md:p-6 bg-black/40 md:bg-white/5 hover:bg-white/10 text-white rounded-full backdrop-blur-xl border border-white/20 md:border-white/10 pointer-events-auto transition-all active:scale-75 shadow-2xl">
+                    <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l6 6-6 6"/></svg>
                 </button>
             </div>
 
