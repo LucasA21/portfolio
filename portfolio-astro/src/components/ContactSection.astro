@@ -19,16 +19,18 @@ const { contact } = Astro.props;
 // Desktop: contact-señalar.svg
 const contactDesktopSvg = fs.readFileSync(path.resolve('./public/contact-señalar.svg'), 'utf-8')
   .replace(/width=".*?"/, 'width="100%"')
-  .replace(/height=".*?"/, 'height="100%"');
+  .replace(/height=".*?"/, 'height="100%"')
+  .replace(/^[\s\S]*?(?=<svg)/i, "");
 
 // Mobile: contact-apoyado.svg (pintado de marrón #531F1F)
 const contactMobileSvg = fs.readFileSync(path.resolve('./public/contact-apoyado.svg'), 'utf-8')
   .replace(/width=".*?"/, 'width="100%"')
   .replace(/height=".*?"/, 'height="100%"')
-  .replace(/fill="#000000"/g, 'fill="#531F1F"');
+  .replace(/fill="#000000"/g, 'fill="#531F1F"')
+  .replace(/^[\s\S]*?(?=<svg)/i, "");
 ---
 
-<section id="contact" class="fade-up-bottom flex flex-col md:flex-row justify-between bg-glass-card/50 backdrop-blur-sm border border-stroke rounded-[40px] pt-6 md:pt-8 px-6 sm:px-10 pb-0 lg:pt-12 lg:px-16 lg:pb-0 gap-2 md:gap-8 mt-24 relative scroll-mt-[22vh] overflow-hidden">
+<section id="contact" class="fade-up-bottom flex flex-col md:flex-row justify-between bg-glass-card/50 backdrop-blur-sm border border-stroke rounded-[40px] pt-6 md:pt-8 px-6 sm:px-10 pb-0 lg:pt-12 lg:px-16 lg:pb-0 gap-2 md:gap-8 mt-24 md:mt-8 relative scroll-mt-[22vh] overflow-hidden">
   
   <div class="flex flex-col flex-1 z-10 w-full items-center md:items-start justify-center self-center pt-8 pb-4 md:py-10 lg:py-12">
     <div class="flex flex-col items-center md:items-start text-center md:text-left gap-4 max-w-lg">
@@ -41,16 +43,15 @@ const contactMobileSvg = fs.readFileSync(path.resolve('./public/contact-apoyado.
   
       <a 
         href={`mailto:${contact.email}`}
-        class="text-[clamp(1.2rem,6vw,40px)] font-medium tracking-wide text-accent-brown hover:opacity-80 transition-opacity break-all md:break-normal mb-6"
+        class="group/contact flex flex-col items-center md:items-start gap-6 hover:opacity-90 transition-all"
       >
-        {contact.email}
-      </a>
+        <span class="text-[clamp(1.2rem,6vw,40px)] font-medium tracking-wide text-accent-brown break-all md:break-normal">
+          {contact.email}
+        </span>
 
-      <a 
-        href={`mailto:${contact.email}`}
-        class="mt-2 bg-accent-brown text-white px-10 py-3.5 rounded-full text-sm font-medium tracking-widest active:scale-95 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 inline-block"
-      >
-        {contact.ctaLabel}
+        <span class="bg-accent-brown text-white px-10 py-3.5 rounded-full text-sm font-medium tracking-widest active:scale-95 group-hover/contact:shadow-lg group-hover/contact:-translate-y-1 transition-all duration-300 inline-block">
+          {contact.ctaLabel}
+        </span>
       </a>
     </div>
   </div>
