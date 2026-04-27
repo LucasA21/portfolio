@@ -17,25 +17,22 @@
       </button>
 
       <!-- Top: Carousel -->
-      <div class="w-full h-[30%] md:h-[40%] relative group/carousel bg-stroke/10 shrink-0">
+      <div class="w-full h-[30%] md:h-[40%] relative group/carousel bg-black/90 shrink-0 cursor-zoom-in">
         <!-- Main Image -->
-        <div id="modal-image-container" class="w-full h-full relative overflow-hidden bg-black/5">
+        <div id="modal-image-container" class="w-full h-full relative overflow-hidden bg-black/95">
             <img 
                 id="modal-main-image" 
                 src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
-                alt="Imagen del proyecto" 
-                class="absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-in-out scale-100" 
+                alt="Imagen del proyecto (clic para ampliar)" 
+                class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out scale-100 hover:scale-105" 
             />
-        </div>
-
-        <!-- Carousel Navigation Arrows -->
-        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-30 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
-            <button id="modal-prev-img" class="hidden md:block p-2 bg-black/30 hover:bg-black/50 text-white rounded-full backdrop-blur-sm pointer-events-auto transition-all active:scale-90" aria-label="Anterior imagen">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button id="modal-next-img" class="hidden md:block p-2 bg-black/30 hover:bg-black/50 text-white rounded-full backdrop-blur-sm pointer-events-auto transition-all active:scale-90" aria-label="Siguiente imagen">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l6 6-6 6"/></svg>
-            </button>
+            <!-- Visual Hint for Lightbox -->
+            <div class="absolute bottom-4 right-4 z-20 flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-white/90 pointer-events-none transition-all group-hover/carousel:bg-black/60 group-hover/carousel:scale-105">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+                <span class="text-[10px] uppercase font-bold tracking-widest hidden md:block">Clic para ampliar</span>
+            </div>
         </div>
 
         <!-- Carousel Dots Indicator -->
@@ -43,6 +40,36 @@
             <!-- Dots injected here -->
         </div>
       </div>
+
+      <!-- Lightbox (Full Screen Gallery) -->
+      <dialog id="project-lightbox" class="fixed inset-0 w-full h-full bg-transparent border-none p-0 m-0 z-100 backdrop:bg-black/95 backdrop:backdrop-blur-2xl">
+        <div class="w-full h-full flex flex-col items-center justify-center relative p-4 md:p-12">
+            <!-- Close Lightbox -->
+            <button id="close-lightbox" class="absolute top-6 right-6 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-xl border border-white/20 z-110 transition-all active:scale-90 shadow-2xl">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12" /></svg>
+            </button>
+
+            <!-- Main Lightbox Image -->
+            <div class="w-full h-full flex items-center justify-center">
+                <img id="lightbox-image" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg" />
+            </div>
+
+            <!-- Lightbox Arrows -->
+            <div class="absolute inset-x-4 md:inset-x-12 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
+                <button id="lightbox-prev" class="p-4 bg-white/5 hover:bg-white/10 text-white rounded-full backdrop-blur-xl border border-white/10 pointer-events-auto transition-all active:scale-90">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button id="lightbox-next" class="p-4 bg-white/5 hover:bg-white/10 text-white rounded-full backdrop-blur-xl border border-white/10 pointer-events-auto transition-all active:scale-90">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l6 6-6 6"/></svg>
+                </button>
+            </div>
+
+            <!-- Counter -->
+            <div id="lightbox-counter" class="absolute bottom-10 left-1/2 -translate-x-1/2 px-6 py-2 bg-white/10 backdrop-blur-xl rounded-full text-white/80 font-medium text-sm border border-white/10">
+                1 / 5
+            </div>
+        </div>
+      </dialog>
 
       <!-- Bottom: Details -->
       <div class="flex-1 flex flex-col min-h-0 bg-main-bg relative md:rounded-r-[40px]">

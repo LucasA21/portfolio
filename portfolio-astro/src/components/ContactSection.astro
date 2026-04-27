@@ -20,14 +20,12 @@ const { contact } = Astro.props;
 const contactDesktopSvg = fs.readFileSync(path.resolve('./public/contact-señalar.svg'), 'utf-8')
   .replace(/width=".*?"/, 'width="100%"')
   .replace(/height=".*?"/, 'height="100%"')
-  .replace(/version=".*?"/i, "")
   .replace(/^[\s\S]*?(?=<svg)/i, "");
 
 // Mobile: contact-apoyado.svg (pintado de marrón #531F1F)
 const contactMobileSvg = fs.readFileSync(path.resolve('./public/contact-apoyado.svg'), 'utf-8')
   .replace(/width=".*?"/, 'width="100%"')
   .replace(/height=".*?"/, 'height="100%"')
-  .replace(/version=".*?"/i, "")
   .replace(/fill="#000000"/g, 'fill="#531F1F"')
   .replace(/^[\s\S]*?(?=<svg)/i, "");
 ---

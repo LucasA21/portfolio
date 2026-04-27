@@ -210,21 +210,61 @@ const totalPages = Math.ceil(projects.length / 3);
 
     let currentImgIndex = 0;
     let modalImages: string[] = [];
+    let autoplayTimer: any = null;
+
+    // Lightbox Elements
+    const lightbox = document.getElementById('project-lightbox') as HTMLDialogElement;
+    const lightboxImg = document.getElementById('lightbox-image') as HTMLImageElement;
+    const lightboxCounter = document.getElementById('lightbox-counter');
+
+    function startAutoplay() {
+        stopAutoplay();
+        if (modalImages.length <= 1) return;
+        autoplayTimer = setInterval(() => {
+            let next = (currentImgIndex + 1) % modalImages.length;
+            updateModalImage(next);
+        }, 3000);
+    }
+
+    function stopAutoplay() {
+        if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+        }
+    }
+
+    function updateLightboxImage(index: number) {
+        currentImgIndex = index;
+        if (lightboxImg && modalImages[index]) {
+            lightboxImg.src = modalImages[index];
+            if (lightboxCounter) {
+                lightboxCounter.textContent = `${index + 1} / ${modalImages.length}`;
+            }
+        }
+        updateModalImage(index); // Sync modal carousel
+    }
 
     if (modalImgContainer) {
+      // Click to open Lightbox
+      modalImgContainer.addEventListener('click', () => {
+        updateLightboxImage(currentImgIndex);
+        lightbox.showModal();
+        stopAutoplay();
+      });
+
       addSwipeSupport(
         modalImgContainer,
         () => {
           if (modalImages.length <= 1) return;
-          let next = currentImgIndex + 1;
-          if (next >= modalImages.length) next = 0;
+          let next = (currentImgIndex + 1) % modalImages.length;
           updateModalImage(next);
+          startAutoplay(); // Reset timer on manual interaction
         },
         () => {
           if (modalImages.length <= 1) return;
-          let prev = currentImgIndex - 1;
-          if (prev < 0) prev = modalImages.length - 1;
+          let prev = (currentImgIndex - 1 + modalImages.length) % modalImages.length;
           updateModalImage(prev);
+          startAutoplay(); // Reset timer on manual interaction
         }
       );
     }
@@ -242,7 +282,7 @@ const totalPages = Math.ceil(projects.length / 3);
         
         if (mainImgEl && modalImages[index]) {
             mainImgEl.style.opacity = '0';
-            mainImgEl.style.transform = 'scale(1.05)';
+            mainImgEl.style.transform = 'scale(1.02)';
             
             setTimeout(() => {
                 mainImgEl.src = modalImages[index];
@@ -301,6 +341,7 @@ const totalPages = Math.ceil(projects.length / 3);
                 dotsContainer.querySelectorAll('.modal-dot').forEach(dot => {
                     dot.addEventListener('click', () => {
                         updateModalImage(parseInt(dot.getAttribute('data-index') || '0'));
+                        startAutoplay(); // Reset timer
                     });
                 });
             }
@@ -313,48 +354,58 @@ const totalPages = Math.ceil(projects.length / 3);
                 mainImgEl.style.transform = 'scale(1)';
             }
 
-            // Mostrar flechas solo si hay más de una imagen
-            const prevImgBtn = document.getElementById('modal-prev-img');
-            const nextImgBtn = document.getElementById('modal-next-img');
-            if (prevImgBtn && nextImgBtn) {
-                if (modalImages.length > 1) {
-                    prevImgBtn.classList.remove('hidden');
-                    nextImgBtn.classList.remove('hidden');
-                } else {
-                    prevImgBtn.classList.add('hidden');
-                    nextImgBtn.classList.add('hidden');
-                }
-            }
-
             modal.showModal();
             document.body.style.overflow = 'hidden';
+            startAutoplay();
         });
-    });
-
-    // Navegación del carrusel
-    document.getElementById('modal-prev-img')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        let next = currentImgIndex - 1;
-        if (next < 0) next = modalImages.length - 1;
-        updateModalImage(next);
-    });
-
-    document.getElementById('modal-next-img')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        let next = currentImgIndex + 1;
-        if (next >= modalImages.length) next = 0;
-        updateModalImage(next);
     });
 
     closeBtn.addEventListener('click', () => {
         modal.close();
         document.body.style.overflow = '';
+        stopAutoplay();
     });
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.close();
             document.body.style.overflow = '';
+            stopAutoplay();
+        }
+    });
+
+    // Lightbox Controls
+    document.getElementById('close-lightbox')?.addEventListener('click', () => {
+        lightbox.close();
+        startAutoplay();
+    });
+
+    document.getElementById('lightbox-next')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateLightboxImage((currentImgIndex + 1) % modalImages.length);
+    });
+
+    document.getElementById('lightbox-prev')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateLightboxImage((currentImgIndex - 1 + modalImages.length) % modalImages.length);
+    });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.close();
+            startAutoplay();
+        }
+    });
+
+    // Teclado para Lightbox
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.open) {
+            if (e.key === 'ArrowRight') updateLightboxImage((currentImgIndex + 1) % modalImages.length);
+            if (e.key === 'ArrowLeft') updateLightboxImage((currentImgIndex - 1 + modalImages.length) % modalImages.length);
+            if (e.key === 'Escape') {
+                lightbox.close();
+                startAutoplay();
+            }
         }
     });
   }
